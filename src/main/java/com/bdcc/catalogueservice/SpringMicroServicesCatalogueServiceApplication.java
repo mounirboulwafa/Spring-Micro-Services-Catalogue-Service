@@ -18,21 +18,24 @@ import java.util.stream.Stream;
 public class SpringMicroServicesCatalogueServiceApplication {
 
     public static void main(String[] args) {
-        System.out.println("********************* Works *********************");
         SpringApplication.run(SpringMicroServicesCatalogueServiceApplication.class, args);
     }
 
     @Bean
     CommandLineRunner start(CategoryRepository categoryRepository, ProductRepository productRepository) {
         return args -> {
+
+            System.out.println("********************* Works *********************");
+
             categoryRepository.deleteAll();
 
             Stream.of("C1 Ordinateur", "C2 Imprimente").forEach(c -> {
-                categoryRepository.save(new Category(c.split(" ")[0], c.split(" ")[1], new ArrayList()));
+                categoryRepository.save(new Category(c.split(" ")[0], c.split(" ")[1], new ArrayList<>()));
             });
 
             categoryRepository.findAll().forEach(System.out::println);
 
+            productRepository.deleteAll();
 
             Category c1 = categoryRepository.findById("C1").get();
             Stream.of("Dell Xps", "Lenovo 720", "Macbook Pro 2019", "Hp 7556").forEach(name -> {
@@ -43,13 +46,15 @@ public class SpringMicroServicesCatalogueServiceApplication {
 
             Category c2 = categoryRepository.findById("C2").get();
             Stream.of("Hp Lazer Jet 4561", "Konika", "Toshiba", "Hp AIO 7556").forEach(name -> {
-                Product p = productRepository.save(new Product(null, name, Math.random() * 1000, c1));
+                Product p = productRepository.save(new Product(null, name, Math.random() * 1000, c2));
                 c2.getProducts().add(p);
                 categoryRepository.save(c2);
             });
 
 
-            productRepository.findAll().forEach(System.out::println);
+            productRepository.findAll().forEach(p -> {
+                System.out.println(p.toString());
+            });
         };
     }
 }

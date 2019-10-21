@@ -15,12 +15,18 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Category {
     @Id
     private String id;
     private String name;
     @DBRef
-    private Collection<Product> products = new ArrayList<>();
+    private Collection<Product> products;
 
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
